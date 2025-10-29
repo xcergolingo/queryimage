@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redirecting to DuckDuckGo Images</title>
+  <script>
+    /**
+     * Get a specific query parameter from the page URL.
+     * @param {string} name - The name of the parameter to retrieve.
+     * @returns {string|null} - The value of the parameter, or null if not present.
+     */
+    function getQueryParam(name) {
+      const params = new URLSearchParams(window.location.search);
+      return params.get(name);
+    }
+
+    /**
+     * Perform the redirect to DuckDuckGo with the given query.
+     */
+    function redirectToDuckDuckGo(qParam) {
+      const baseUrl = "https://duckduckgo.com/";
+      const params = new URLSearchParams({
+        origin: "funnel_home_google",
+        t: "h_",
+        q: qParam,
+        ia: "images",
+        iax: "images"
+      });
+      window.location.href = baseUrl + "?" + params.toString();
+    }
+
+    // On page load: get parameter 'q' and redirect
+    document.addEventListener("DOMContentLoaded", function() {
+      const qValue = getQueryParam("q");
+      if (qValue && qValue.trim() !== "") {
+        redirectToDuckDuckGo(qValue.trim());
+      } else {
+        // If no query provided, show a friendly message or fallback.
+        document.body.innerHTML = "<p>No ‘q’ parameter provided in the URL.</p>";
+      }
+    });
+  </script>
+</head>
+<body>
+  <p>Redirecting…</p>
+</body>
+</html>
